@@ -9,8 +9,8 @@ import DognhutChart from './dognhut-chart.vue';
 
 const chartData =  {
     label: "Catégories",
-    labels: ["Réstaurant", "Shopping", "Carburant"],
-    data: [30, 50, 100]
+    labels: ["Réstaurant", "Shopping", "Carburant","Facture"],
+    data: [45.5, 120, 62.3, 85]
 }
 
 </script>

@@ -2,7 +2,7 @@
     <div class="card w-90 shadow-2xl flex flex-col p-6 gap-4 text-xl">
         <div class="flex justify-between">
             <h2 class="font-bold">Dépenses Récentes</h2>
-            <a href="#">Voir tout</a>
+            <a href="#" class="color-primary">Voir tout</a>
         </div>
         <table>
             <tbody>
