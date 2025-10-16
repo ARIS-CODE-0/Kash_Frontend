@@ -12,7 +12,7 @@
             <p>{{ exepense.date }}</p>
         </td>
         <td>
-            <span class="text-error font-bold relative left-5 ">- {{ exepense.amount }} $</span>
+            <span class="text-error font-bold relative left-5">- {{ exepense.amount }} $</span>
         </td>
     </tr>
 </template>
@@ -26,20 +26,9 @@ const props = defineProps({
     exepense: {
         type: Object,
         required: true
-    },
-    index: {
-        type: Number,
-        required: true
     }
 })
 
-console.log(props.exepense)
-onMounted(() => {
-    const badge = document.getElementById(`badge-${props.index}`);
-    /*badge.style.color = `var(--color-${props.exepense.category.color})`*/
-    //badge.classList.add(`badge-${props.exepense.category.color}`)
-    //console.log(badge, `badge-${props.exepense.category.color}`)
-})
 </script>
 <style scoped>
 ;

@@ -2,7 +2,7 @@
     <div class="card w-90 shadow-2xl flex flex-col p-6 gap-4 text-xl">
         <div class="flex justify-between">
             <h2 class="font-bold">Dépenses Récentes</h2>
-            <a href="#" class="color-primary">Voir tout</a>
+            <a href="#" class="text-primary">Voir tout</a>
         </div>
         <table>
             <tbody>
@@ -33,7 +33,7 @@ const expenses = ref([{
 {
     title: "Shopping",
     date: "9 Oct, 18:20",
-    amount: 120,
+    amount: 120.00,
     category: {
         name: "shopping",
         icon: "shopping-cart",

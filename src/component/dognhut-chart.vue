@@ -12,6 +12,10 @@ const props = defineProps({
   data: {
     type: Object,
     required: true
+  },
+  colors: {
+    type: Array,
+    required: true
   }
 })
 
@@ -37,23 +41,13 @@ const options = {
 
 //création des données
 const data = ref({
-  labels: /*[
-    'Red',
-    'Blue',
-    'Yellow'
-  ]*/props.data.labels,
+  labels: props.data.labels,
   datasets: [{
     label: props.data.label,
     data: props.data.data,
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(54, 255, 86)',
-      'rgb(255, 205, 86)'
-    ],
+    backgroundColor: props.colors,
     hoverOffset: 4
   }]
 })
 
-console.log(props.data)
 </script>
