@@ -18,9 +18,9 @@
             <h2 class="font-bold">Dépenses Récentes</h2>
             <a href="#" class="text-primary" @click="togglePanel">{{ isOpen ? 'Voir moins' : 'Voir plus' }}</a>
         </div>
-        <div class="overflow-y-auto">
-            <table>
-            <tbody>
+        <div v-if="allExpenses.length > 0" class="overflow-y-auto">
+            <table class="w-full">
+            <tbody class="flex flex-col gap-3 w-full">
                 <TableLigne v-for="(expense, i) in allExpenses"
                 :exepense="expense"
                 :index="i"
@@ -28,6 +28,9 @@
                 />
             </tbody>
         </table>
+        </div>
+        <div v-else>
+            <p class="text-xl text-gray-500 italic text-center">Vous n'avez aucune dépense</p>
         </div>
         
     </div>
@@ -39,6 +42,13 @@ import TableLigne from './table-ligne.vue';
 
 const isOpen = ref(false);
 const isFixed = ref(false);
+
+const props = defineProps({
+    expenses: {
+        type: Object,
+        required: true
+    }
+})
 
 
 function togglePanel() {
@@ -64,137 +74,8 @@ onMounted(() => {
 })
 
 
-const expenses = ref([{
-    title: "Restaurant",
-    date: "10 Oct, 13:45",
-    amount: 45.50,
-    category: {
-        name: "eat",
-        icon: "utensils",
-        color: "error"
-    }
-},
-{
-    title: "Shopping",
-    date: "9 Oct, 18:20",
-    amount: 120.00,
-    category: {
-        name: "shopping",
-        icon: "shopping-cart",
-        color: "primary"
-    }
-},
-{
-    title: "Carburant",
-    date: "9 Oct, 08:12",
-    amount: 62.30,
-    category: {
-        name: "fuel",
-        icon: "fuel",
-        color: "success"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Snkrs",
-    date: "8 Oct, 12:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},
-{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-},{
-    title: "Factures",
-    date: "8 Oct, 11:00",
-    amount:85.00,
-    category: {
-        name: "bills",
-        icon: "scroll-text",
-        color: "warning"
-    }
-}
-]
-);
+
+const expenses = ref(props.expenses)
 
 const allExpenses = ref(expenses.value.slice(0,4))
 
@@ -202,13 +83,11 @@ watch(isOpen, () => {
     if(!isOpen.value) {
         setTimeout(() => {
             allExpenses.value = expenses.value.slice(0,4)
-            console.log(4)
             return
         }, 1000)
     }
 
     allExpenses.value = expenses.value
-    console.log("toutes les...")
 })
 
 </script>
