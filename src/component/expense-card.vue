@@ -8,7 +8,7 @@
     </div>
     <!--Panneau-->
     <div 
-     class="card w-90 shadow-2xl flex flex-col p-6 gap-4 text-xl bg-base-100 transition-all overflow-hidden z-50"
+     class="card w-85 shadow-2xl flex flex-col p-6 gap-4 text-xl bg-base-100 transition-all overflow-hidden z-50"
      :class="[
         isFixed ? 'fixed bottom-0' : 'relative',
         isOpen ? 'translate-y-0 h-[75vh]  ease-out duration-1000' : 'translate-y-[0] h-[10%] ease-in duration-1000'
@@ -20,14 +20,14 @@
         </div>
         <div v-if="allExpenses.length > 0" class="overflow-y-auto">
             <table class="w-full">
-            <tbody class="flex flex-col gap-3 w-full">
-                <TableLigne v-for="(expense, i) in allExpenses"
-                :exepense="expense"
-                :index="i"
-                :key="expense.title"
-                />
-            </tbody>
-        </table>
+                <transition-group name="fade" tag="tbody" class="flex flex-col gap-3 w-full">
+                    <TableLigne v-for="(expense, i) in allExpenses"
+                        :expense="expense"
+                        :index="i"
+                        :key="expense._id"
+                    />
+                </transition-group>
+            </table>
         </div>
         <div v-else>
             <p class="text-xl text-gray-500 italic text-center">Vous n'avez aucune dépense</p>
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import TableLigne from './table-ligne.vue';
 
 const isOpen = ref(false);
@@ -45,7 +45,7 @@ const isFixed = ref(false);
 
 const props = defineProps({
     expenses: {
-        type: Object,
+        type: Array,
         required: true
     }
 })
@@ -75,9 +75,9 @@ onMounted(() => {
 
 
 
-const expenses = ref(props.expenses)
+//const expenses = ref(props.expenses)
 
-const allExpenses = ref(expenses.value.slice(0,4))
+/*const allExpenses = ref(expenses.value.slice(0,4))
 
 watch(isOpen, () => {
     if(!isOpen.value) {
@@ -88,6 +88,14 @@ watch(isOpen, () => {
     }
 
     allExpenses.value = expenses.value
+})*/
+
+const allExpenses = computed(() => {
+    return isOpen.value ? props.expenses : props.expenses.slice(0, 4)
 })
 
 </script>
+<style>
+.fade-enter-active, .fade-leave-active { transition: all 0.4s; }
+.fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(-10px); }
+</style>
