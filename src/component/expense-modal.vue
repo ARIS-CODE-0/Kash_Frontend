@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { CirclePlus } from "lucide-vue-next";
 
 const myModal = ref(null);
@@ -81,6 +81,13 @@ const categories = ref(null);
 const isOpen = ref(false)
 
 const emits = defineEmits(['submit'])
+
+const props = defineProps({
+  isAnUpdate: {
+    type: Boolean,
+    required: false
+  }
+})
 
 onMounted(async () => {
   const res = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/categories`);
@@ -96,6 +103,15 @@ function closeModal() {
   myModal.value?.close();
   isOpen = false
 }
+
+watch(props.isAnUpdate,() => {
+  console.log(props.isAnUpdate)
+  if(props.isAnUpdate) {
+    openModal();
+  }
+})
+
+console.log(props.isAnUpdate)
 
 function submitExpense() {
   

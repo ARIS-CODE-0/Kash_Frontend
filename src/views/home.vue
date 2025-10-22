@@ -6,8 +6,8 @@
   <main class="flex flex-col items-center pt-5 gap-8" v-if="state === 'success'">
     <TotalCard :totalAmount="statistiques.totalAmount"/>
     <CategoryCard :chart-data="statistiques.chartData"/>
-    <ExpenseModal @submit="addExpense"/>
-    <ExpenseCard :expenses="data"/>
+    <ExpenseModal @submit="addExpense" :is-an-update="isAnUpdate"/>
+    <ExpenseCard :expenses="data" @delete="deleteExpense" @update="updateExpense"/>
   </main>
   <Erreur v-else-if="state === 'error'" :message="erreur.message"/>
   <Loading v-else/>
@@ -28,6 +28,7 @@ const data = ref([]);
 const state = ref('loading');
 const erreur = ref({ status: false, message: "No error !"})
 const statistiques = ref(null);
+const isAnUpdate = ref(false)
 
 onMounted(async () => {
   try {
@@ -35,7 +36,6 @@ onMounted(async () => {
     data.value = await response.json();
     const statRes = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses/statistiques`)
     statistiques.value = await statRes.json()
-    console.log(statistiques.value)
     state.value = 'success'
   } catch (error) {
     state.value = 'error'
@@ -71,6 +71,38 @@ async function addExpense(newExpense) {
     const statRes = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses/statistiques`)
     statistiques.value = await statRes.json()
 
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function deleteExpense(id) {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expense/${id}`,{
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    if(!res.ok) {
+      throw new Error('une erreur est survenue lors de la suppression de la dépense')
+      return
+    }
+
+    const index = data.value.findIndex(exp => exp._id === id)
+    data.value.splice(index,1)
+    const statRes = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses/statistiques`)
+    statistiques.value = await statRes.json()
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
+async function updateExpense(expense) {
+  try {
+    isAnUpdate.value  = true
+    alert('la fonctionnalité est en devellopement')
   } catch (error) {
     console.error(error)
   }

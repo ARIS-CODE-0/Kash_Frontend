@@ -25,6 +25,8 @@
                         :expense="expense"
                         :index="i"
                         :key="expense._id"
+                        @delete="emits('delete',expense._id)"
+                        @update="emits('update', expense)"
                     />
                 </transition-group>
             </table>
@@ -50,6 +52,8 @@ const props = defineProps({
     }
 })
 
+const emits = defineEmits(['delete','update'])
+
 
 function togglePanel() {
     if(!isOpen.value) {
@@ -73,22 +77,6 @@ onMounted(() => {
     div.value = document.getElementById("div");
 })
 
-
-
-//const expenses = ref(props.expenses)
-
-/*const allExpenses = ref(expenses.value.slice(0,4))
-
-watch(isOpen, () => {
-    if(!isOpen.value) {
-        setTimeout(() => {
-            allExpenses.value = expenses.value.slice(0,4)
-            return
-        }, 1000)
-    }
-
-    allExpenses.value = expenses.value
-})*/
 
 const allExpenses = computed(() => {
     return isOpen.value ? props.expenses : props.expenses.slice(0, 4)
