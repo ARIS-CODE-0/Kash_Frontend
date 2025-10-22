@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, computed } from 'vue'
+import { defineAsyncComponent, computed, toRef, watch } from 'vue'
 
 // ⚙️ Props : nom de l'icône et options d'apparence
 const props = defineProps({
@@ -26,12 +26,20 @@ async function loadIcon(name) {
   }
 }
 
+// expose name as a ref so template can use it as key
+const name = toRef(props, 'name')
+
 // 🧠 Composant asynchrone réactif
 const Icon = computed(() =>
-  defineAsyncComponent(() => loadIcon(props.name))
+  defineAsyncComponent(() => loadIcon(name.value))
 )
+
+watch(() => name, () => {
+  console.log(name.value)
+})
+
 </script>
 
 <template>
-  <component :is="Icon" v-bind="$attrs" />
+  <component :is="Icon" v-bind="$attrs" :key="name"/>
 </template>

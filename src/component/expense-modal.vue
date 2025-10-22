@@ -80,11 +80,15 @@ const category = ref("");
 const categories = ref(null);
 const isOpen = ref(false)
 
-const emits = defineEmits(['submit'])
+const emits = defineEmits(['create','update'])
 
 const props = defineProps({
   isAnUpdate: {
     type: Boolean,
+    required: false
+  },
+  updateData: {
+    type: Object,
     required: false
   }
 })
@@ -96,26 +100,32 @@ onMounted(async () => {
 
 function openModal() {
   myModal.value?.showModal();
-  isOpen = true
+  isOpen.value = true
 }
 
 function closeModal() {
   myModal.value?.close();
-  isOpen = false
+  isOpen.value = false
 }
 
-watch(props.isAnUpdate,() => {
-  console.log(props.isAnUpdate)
+watch(() => props.isAnUpdate,() => {
   if(props.isAnUpdate) {
     openModal();
+    title.value = props.updateData.title
+    amount.value = props.updateData.amount
+    category.value = props.updateData.category._id
   }
 })
 
-console.log(props.isAnUpdate)
+
 
 function submitExpense() {
   
-  emits('submit', {title: title.value, amount: amount.value, category: category.value})
+  if(props.isAnUpdate) {
+    emits('update', { title: title.value, amount: amount.value, category: category.value, id: props.updateData._id })
+  } else {
+    emits('create', { title: title.value, amount: amount.value, category: category.value })
+  }
   title.value = ''
   amount.value = 0
   category.value = ''

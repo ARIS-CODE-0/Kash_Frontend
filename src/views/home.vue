@@ -6,8 +6,16 @@
   <main class="flex flex-col items-center pt-5 gap-8" v-if="state === 'success'">
     <TotalCard :totalAmount="statistiques.totalAmount"/>
     <CategoryCard :chart-data="statistiques.chartData"/>
-    <ExpenseModal @submit="addExpense" :is-an-update="isAnUpdate"/>
-    <ExpenseCard :expenses="data" @delete="deleteExpense" @update="updateExpense"/>
+    <ExpenseModal 
+    @create="createExpense"
+    @update="updateExpense"
+    :is-an-update="isAnUpdate" 
+    :update-data="updateData"/>
+
+    <ExpenseCard 
+    :expenses="data" 
+    @delete="deleteExpense" 
+    @update="openUpadteModal"/>
   </main>
   <Erreur v-else-if="state === 'error'" :message="erreur.message"/>
   <Loading v-else/>
@@ -29,6 +37,7 @@ const state = ref('loading');
 const erreur = ref({ status: false, message: "No error !"})
 const statistiques = ref(null);
 const isAnUpdate = ref(false)
+const updateData = ref(null)
 
 onMounted(async () => {
   try {
@@ -51,7 +60,7 @@ const toggleTheme = () => {
   alert('la fonctionnalité est en cours de dévéloppement')
   }
 
-async function addExpense(newExpense) {
+async function createExpense(newExpense) {
   try {
     const res = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expense`,{
       method: "POST",
@@ -101,11 +110,36 @@ async function deleteExpense(id) {
 
 async function updateExpense(expense) {
   try {
-    isAnUpdate.value  = true
-    alert('la fonctionnalité est en devellopement')
+    const res = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expense/${expense.id}`,{
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(expense)
+    })
+    if(!res.ok) {
+      throw new Error('une erreur est survenue lors de la modification de la dépense')
+      return
+    }
+
+
+    const newExpenses = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses`);
+    const index = data.value.findIndex(exp => exp._id === expense.id)
+    data.value = await newExpenses.json()
+    const statRes = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses/statistiques`)
+    statistiques.value = await statRes.json()
+
+    isAnUpdate.value = false
+
+    //alert('la fonctionnalité est en developpement')
   } catch (error) {
     console.error(error)
   }
 }
  
+
+ async function openUpadteModal(expense) {
+    updateData.value = expense
+    isAnUpdate.value  = true
+ }
 </script>
