@@ -91,7 +91,6 @@ function closeModal(modal) {
    modal.close();
   //isOpen = false
 }
-console.log(props.expense.category)
 </script>
 
 <style scoped>

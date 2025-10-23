@@ -34,9 +34,9 @@ const Icon = computed(() =>
   defineAsyncComponent(() => loadIcon(name.value))
 )
 
-watch(() => name, () => {
+/*watch(() => name, () => {
   console.log(name.value)
-})
+})*/
 
 </script>
 

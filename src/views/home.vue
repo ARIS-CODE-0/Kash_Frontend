@@ -76,7 +76,6 @@ async function createExpense(newExpense) {
     }
     const returnedExpense = await res.json() 
     data.value.unshift(await returnedExpense.expense)
-    console.log(data.value)
     const statRes = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/expenses/statistiques`)
     statistiques.value = await statRes.json()
 
