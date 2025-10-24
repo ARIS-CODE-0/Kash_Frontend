@@ -60,7 +60,7 @@
             />
 
             <button class="btn btn-soft btn-primary border border-primary">
-              Ajouter
+              {{ props.isAnUpdate ? 'Mettre à jour' : 'Ajouter' }}
             </button>
           </form>
         </div>
